@@ -1,0 +1,26 @@
+<h2>구매 이력 조회</h2>
+
+{% if selected_user %}
+    <h3>{{ selected_user.username }}님의 구매 이력</h3>
+{% endif %}
+
+<ul>
+    {% for order in orders %}
+        <li>
+            <strong>구매자:</strong> {{ order.user.username }}<br>
+            <strong>주문 날짜:</strong> {{ order.created|date:"Y.m.d" }}<br>
+            <strong>주문 상태:</strong> {{ order.status }}<br>
+            <strong>총 금액:</strong> {{ order.get_total_price }}원<br>
+            <strong>구매 상품:</strong>
+            <ul>
+            {% for item in order.items.all %}
+                <li>{{ item.product.name }} (수량: {{ item.quantity }}) - {{ item.price }}원</li>
+            {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+</ul>
+
+{% if not orders %}
+    <p>주문 내역이 없습니다.</p>
+{% endif %}
